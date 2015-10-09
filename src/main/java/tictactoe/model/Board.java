@@ -58,11 +58,17 @@ public class Board {
     public String toString() {
         StringBuilder stringBoard = new StringBuilder();
         for (int row = 0; row < SIZE; row++) {
-            for(int col = 0; col < SIZE; col++) {
-                stringBoard.append(
-                        formatCell(contents.get(new Cell(row, col))));
-            }
+            stringBoard.append(rowToString(row));
             stringBoard.append("\n");
+        }
+        return stringBoard.toString();
+    }
+
+    private String rowToString(int row) {
+        StringBuilder stringBoard = new StringBuilder();
+        for(int col = 0; col < SIZE; col++) {
+            stringBoard.append(
+                    formatCell(contents.get(new Cell(row, col))));
         }
         return stringBoard.toString();
     }
