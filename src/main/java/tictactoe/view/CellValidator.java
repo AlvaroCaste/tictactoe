@@ -2,31 +2,26 @@ package tictactoe.view;
 
 import tictactoe.model.Cell;
 
-import java.util.Arrays;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CellValidator implements Validator<Cell> {
 
-    private final int NUMBER_OF_COORDINATES = 2;
+    private final Pattern CELL_PATTERN = Pattern
+            .compile("\\s*(\\d+),\\s*(\\d+)\\s*");
 
     @Override
     public Optional<Cell> validate(String input) {
-        //TODO: Refactor
-        int[] coords = Arrays.stream(input.split(","))
-                .filter(this::isANumber)
-                .mapToInt(Integer::parseInt)
-                .toArray();
-
-        return (coords.length == NUMBER_OF_COORDINATES) ?
-                Optional.of(new Cell(coords[0], coords[1])) :
-                Optional.<Cell>empty();
+        Matcher matcher = CELL_PATTERN.matcher(input);
+        return matcher.find()
+                ? Optional.of(buildCell(matcher))
+                : Optional.empty();
     }
 
-    private boolean isANumber(String number) {
-        for (char digit : number.toCharArray()) {
-            if (!Character.isDigit(digit))
-                return false;
-        }
-        return true;
+    private Cell buildCell(Matcher matcher) {
+        int row = Integer.parseInt(matcher.group(1));
+        int col = Integer.parseInt(matcher.group(2));
+        return new Cell(row, col);
     }
 }
