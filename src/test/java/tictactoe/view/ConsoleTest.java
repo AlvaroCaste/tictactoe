@@ -20,7 +20,7 @@ public class ConsoleTest {
     public void setUp() throws Exception {
         input = new PipedWriter();
         output = new CharArrayWriter();
-        console = new Console(new PipedReader(input), output);
+        console = new TerminalConsole(new PipedReader(input), output);
         booleanValidator = input -> {
             switch (input) {
                 case "true": return Optional.of(true);
@@ -67,14 +67,15 @@ public class ConsoleTest {
         typeLine("me neither");
         typeLine("true");
         assertTrue(console.ask(prompt, booleanValidator));
-        //TODO: clarify
-        String allOutputLines = Collections.nCopies(3, prompt)
-                .stream().reduce("", String::concat);
-        assertEquals(allOutputLines, output.toString());
+        assertEquals(repeatString(prompt, 3), output.toString());
     }
 
     public void typeLine(String line) throws IOException {
         input.write(line + "\n");
         input.flush();
+    }
+
+    private String repeatString(String string, int times) {
+        return String.join("", Collections.nCopies(times, string));
     }
 }
