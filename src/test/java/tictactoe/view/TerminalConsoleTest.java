@@ -9,7 +9,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.*;
 
-public class ConsoleTest {
+public class TerminalConsoleTest {
 
     private PipedWriter input;
     private Writer output;
